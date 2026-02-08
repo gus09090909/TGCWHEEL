@@ -661,44 +661,16 @@
         // ============================================
         // FIREBASE CONFIGURATION
         // ============================================
-        // REPLACE WITH YOUR FIREBASE CONFIG
-        // Go to: https://console.firebase.google.com/
-        // Create a project > Add web app > Copy config
         
         const firebaseConfig = {
             apiKey: "AIzaSyArrlYBile69g0h584Mw8KqvVC1yYtZlO0",
             authDomain: "tgcwheel.firebaseapp.com",
-            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            databaseURL: "https://tgcwheel-default-rtdb.firebaseio.com",
             projectId: "tgcwheel",
             storageBucket: "tgcwheel.firebasestorage.app",
             messagingSenderId: "435328083427",
             appId: "1:435328083427:web:f0e6707f7a282bafba2cd6"
         };
-
-        // Check if Firebase is configured
-        if (firebaseConfig.apiKey === "AIzaSyArrlYBile69g0h584Mw8KqvVC1yYtZlO0") {
-            document.getElementById('firebaseNotice').classList.add('show');
-            console.error(`
-╔════════════════════════════════════════════════════════════╗
-║  FIREBASE NOT CONFIGURED!                                  ║
-║                                                            ║
-║  Follow these steps:                                       ║
-║  1. Go to https://console.firebase.google.com/            ║
-║  2. Create a new project (free)                           ║
-║  3. Click "Add app" > Web (</> icon)                      ║
-║  4. Copy the firebaseConfig object                         ║
-║  5. Replace the firebaseConfig in this file                ║
-║  6. Enable Realtime Database in Firebase Console          ║
-║  7. Set database rules to:                                 ║
-║     {                                                      ║
-║       "rules": {                                           ║
-║         ".read": true,                                     ║
-║         ".write": true                                     ║
-║       }                                                    ║
-║     }                                                      ║
-╚════════════════════════════════════════════════════════════╝
-            `);
-        }
 
         // Initialize Firebase
         let database;
