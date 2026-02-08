@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TGC Wheel of Fortune</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Righteous&family=Bangers&family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -126,6 +131,23 @@
         .music-control span {
             color: var(--gold);
             font-weight: bold;
+        }
+
+        .firebase-notice {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(230, 57, 70, 0.9);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            z-index: 100;
+            display: none;
+        }
+
+        .firebase-notice.show {
+            display: block;
         }
 
         .login-screen {
@@ -544,6 +566,10 @@
     </style>
 </head>
 <body>
+    <div class="firebase-notice" id="firebaseNotice">
+        ⚠️ Configure Firebase first! Check console for instructions.
+    </div>
+
     <script>
         for (let i = 0; i < 50; i++) {
             const s = document.createElement('div');
@@ -632,13 +658,71 @@
     </div>
 
     <script>
-        // MEMBER LIST (without gus - he uses password)
+        // ============================================
+        // FIREBASE CONFIGURATION
+        // ============================================
+        // REPLACE WITH YOUR FIREBASE CONFIG
+        // Go to: https://console.firebase.google.com/
+        // Create a project > Add web app > Copy config
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyArrlYBile69g0h584Mw8KqvVC1yYtZlO0",
+            authDomain: "tgcwheel.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "tgcwheel",
+            storageBucket: "tgcwheel.firebasestorage.app",
+            messagingSenderId: "435328083427",
+            appId: "1:435328083427:web:f0e6707f7a282bafba2cd6"
+        };
+
+        // Check if Firebase is configured
+        if (firebaseConfig.apiKey === "AIzaSyArrlYBile69g0h584Mw8KqvVC1yYtZlO0") {
+            document.getElementById('firebaseNotice').classList.add('show');
+            console.error(`
+╔════════════════════════════════════════════════════════════╗
+║  FIREBASE NOT CONFIGURED!                                  ║
+║                                                            ║
+║  Follow these steps:                                       ║
+║  1. Go to https://console.firebase.google.com/            ║
+║  2. Create a new project (free)                           ║
+║  3. Click "Add app" > Web (</> icon)                      ║
+║  4. Copy the firebaseConfig object                         ║
+║  5. Replace the firebaseConfig in this file                ║
+║  6. Enable Realtime Database in Firebase Console          ║
+║  7. Set database rules to:                                 ║
+║     {                                                      ║
+║       "rules": {                                           ║
+║         ".read": true,                                     ║
+║         ".write": true                                     ║
+║       }                                                    ║
+║     }                                                      ║
+╚════════════════════════════════════════════════════════════╝
+            `);
+        }
+
+        // Initialize Firebase
+        let database;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+            console.log('✅ Firebase initialized successfully!');
+        } catch(error) {
+            console.error('❌ Firebase initialization failed:', error);
+        }
+
+        // ============================================
+        // GAME CONFIGURATION
+        // ============================================
+        
         const MEMBERS = ["Almostn33t", "Atro", "BaconChizBurger", "Bainsol", "BarbaricGenie", "BorjaGRouco", "Carenard", "Ch1cWolf", "CosmicDrink", "CuteEnby", "Damianea103", "Dandellion", "DoubleOmurfy", "DrTenma", "Eindirk", "Griske14", "HUMoonlight", "Ignition365", "Ivannes", "Jztr", "Krystie", "Lontaz", "LumpyCreature", "Mourinhos86", "Makki", "Markox21", "MedinaRoscoe", "Metalhead8489", "MikewithAnI", "MrOuiOui", "Noodles91", "Orionid", "Patzl", "PoeticKatana", "QuinlanLJ", "RePlayBe", "Rinocap", "Sakakino", "DanielStoSve", "Shughes91", "SoullessSoup", "SunnySideVp", "TempR", "Thexder", "Tucs", "TwixClub", "Vampiresska", "VenomousNyx", "Vin3", "Vini1", "Vot4ol", "Waxlor", "Yugimax", "Yukisuna", "akfas", "ithamore", "LieEater", "schmoan", "yamaraus", "yannbz", "VinroyIsViral", "Lilyhia", "CatzZz", "PsychoApeMan", "Gooberdragon"];
 
         const COLORS = ['#E63946', '#F77F00', '#FFD60A', '#06D6A0', '#118AB2', '#9D4EDD', '#2A9D8F', '#E76F51', '#264653', '#8B5CF6', '#10B981', '#F59E0B', '#8338EC', '#FB5607', '#3A86FF', '#06FFA5'];
         const VALUES = [5, 10, 5, 20, 5, 10, 5, 30, 5, 10, 5, 20, 5, 10, 5, 50];
 
-        // Audio
+        // ============================================
+        // AUDIO
+        // ============================================
+        
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         const audioCtx = new AudioContext();
         let musicOn = false;
@@ -692,7 +776,10 @@
             o.stop(audioCtx.currentTime + d);
         }
 
-        // Draw wheel with FIXED UPRIGHT NUMBERS
+        // ============================================
+        // DRAW WHEEL
+        // ============================================
+        
         const canvas = document.getElementById('wheelCanvas');
         const ctx = canvas.getContext('2d');
         const centerX = 300;
@@ -707,7 +794,6 @@
                 const startAngle = i * anglePerSegment - Math.PI / 2;
                 const endAngle = startAngle + anglePerSegment;
 
-                // Draw segment
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
                 ctx.arc(centerX, centerY, radius, startAngle, endAngle);
@@ -718,7 +804,6 @@
                 ctx.lineWidth = 2;
                 ctx.stroke();
 
-                // Draw number - ALWAYS UPRIGHT (not rotating with wheel)
                 const angle = startAngle + anglePerSegment / 2;
                 const textDist = radius * 0.65;
                 const x = centerX + Math.cos(angle) * textDist;
@@ -726,7 +811,7 @@
 
                 ctx.save();
                 ctx.translate(x, y);
-                ctx.rotate(angle + Math.PI / 2); // Keep numbers upright
+                ctx.rotate(angle + Math.PI / 2);
                 ctx.fillStyle = 'white';
                 ctx.strokeStyle = 'rgba(0,0,0,0.9)';
                 ctx.lineWidth = 5;
@@ -741,7 +826,10 @@
 
         drawWheel();
 
-        // Game state with CLOUD STORAGE (shared: true means global for all users)
+        // ============================================
+        // GAME STATE & FIREBASE FUNCTIONS
+        // ============================================
+        
         let state = {
             players: [],
             current: null,
@@ -751,24 +839,28 @@
             rotation: 0
         };
 
-        // CLOUD STORAGE - shared: true makes it global across all users
         async function loadPlayers() {
+            if (!database) return;
             try {
-                const result = await window.storage.get('tgc-wheel-global-v1', true); // true = shared globally
-                if (result && result.value) {
-                    state.players = JSON.parse(result.value);
-                    updateLeaderboard();
-                }
+                const snapshot = await database.ref('players').once('value');
+                const data = snapshot.val();
+                state.players = data ? Object.values(data) : [];
+                updateLeaderboard();
             } catch (e) {
-                state.players = [];
+                console.error('Load error:', e);
             }
         }
 
         async function savePlayers() {
+            if (!database) return;
             try {
-                await window.storage.set('tgc-wheel-global-v1', JSON.stringify(state.players), true); // true = shared globally
+                const playersObj = {};
+                state.players.forEach(p => {
+                    playersObj[p.name] = p;
+                });
+                await database.ref('players').set(playersObj);
             } catch (e) {
-                console.error('Cloud save error:', e);
+                console.error('Save error:', e);
             }
         }
 
@@ -777,11 +869,22 @@
             if (confirm(`Delete ${name}?`)) {
                 state.players = state.players.filter(p => p.name !== name);
                 await savePlayers();
-                await loadPlayers();
             }
         }
 
-        // Login suggestions
+        // Real-time listener
+        if (database) {
+            database.ref('players').on('value', (snapshot) => {
+                const data = snapshot.val();
+                state.players = data ? Object.values(data) : [];
+                updateLeaderboard();
+            });
+        }
+
+        // ============================================
+        // LOGIN SYSTEM
+        // ============================================
+        
         const usernameInput = document.getElementById('usernameInput');
         const suggestions = document.getElementById('suggestions');
 
@@ -792,7 +895,6 @@
                 return;
             }
             
-            // Check if typing "gus"
             if (val === 'gus' || 'gus'.startsWith(val)) {
                 suggestions.innerHTML = '<div class="suggestion-item" onclick="selectUser(\'gus\')">gus (Admin)</div>';
                 suggestions.classList.remove('hidden');
@@ -815,7 +917,6 @@
             suggestions.classList.add('hidden');
         }
 
-        // Admin panel handlers
         document.getElementById('adminLoginBtn').onclick = async () => {
             const pwd = document.getElementById('adminPassword').value;
             if (pwd === 'TGCWHEEL') {
@@ -839,7 +940,6 @@
             document.getElementById('adminPassword').value = '';
         };
 
-        // Login button
         document.getElementById('loginBtn').onclick = async () => {
             const input = usernameInput.value.trim();
             if (!input) {
@@ -847,14 +947,12 @@
                 return;
             }
 
-            // Check if it's gus
             if (input.toLowerCase() === 'gus') {
                 document.getElementById('adminOverlay').classList.remove('hidden');
                 document.getElementById('adminPanel').classList.remove('hidden');
                 return;
             }
 
-            // Check if member
             const member = MEMBERS.find(m => m.toLowerCase() === input.toLowerCase());
             if (!member) {
                 alert('You are not on the member list!');
@@ -899,6 +997,10 @@
             state.isAdmin = false;
         };
 
+        // ============================================
+        // SPIN WHEEL
+        // ============================================
+        
         document.getElementById('spinBtn').onclick = async () => {
             if (state.spinning || state.spinsLeft <= 0) return;
 
@@ -939,7 +1041,6 @@
                 setTimeout(() => playTone(784, 0.3), 400);
 
                 updateDisplay();
-                await loadPlayers();
 
                 state.spinning = false;
                 if (state.spinsLeft > 0 || state.isAdmin) {
@@ -994,9 +1095,6 @@
             musicOn = true;
             playMusic();
         };
-
-        // Auto-refresh leaderboard every 2 seconds for REAL-TIME updates
-        setInterval(loadPlayers, 2000);
     </script>
 </body>
 </html>
