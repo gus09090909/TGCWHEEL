@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TGC Wheel of Fortune</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Righteous&family=Bangers&family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #FFD700;
+            --gold-dark: #FFA500;
+            --red: #E63946;
+            --purple: #9D4EDD;
+            --green: #06D6A0;
+            --bg-dark: #0A0E27;
+            --bg-light: #1A1F3A;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-light) 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(157, 78, 221, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .sparkle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkleFloat 3s infinite;
+        }
+
+        @keyframes sparkleFloat {
+            0%, 100% { transform: translateY(0) scale(0); opacity: 0; }
+            50% { transform: translateY(-100px) scale(1); opacity: 1; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .header h1 {
+            font-family: 'Bangers', cursive;
+            font-size: 5rem;
+            color: var(--gold);
+            text-shadow: 
+                0 0 10px rgba(255, 215, 0, 0.8),
+                0 0 20px rgba(255, 215, 0, 0.6),
+                4px 4px 0 var(--red),
+                8px 8px 0 var(--purple);
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+            animation: neonPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes neonPulse {
+            0%, 100% { 
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.6),
+                4px 4px 0 var(--red), 8px 8px 0 var(--purple);
+            }
+            50% { 
+                text-shadow: 0 0 20px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 215, 0, 0.8),
+                4px 4px 0 var(--red), 8px 8px 0 var(--purple);
+            }
+        }
+
+        .subtitle {
+            font-family: 'Righteous', cursive;
+            font-size: 1.5rem;
+            color: var(--purple);
+            text-shadow: 0 0 10px rgba(157, 78, 221, 0.8);
+        }
+
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(26, 31, 58, 0.9);
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 2px solid var(--gold);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .music-control:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .music-control span {
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .login-screen {
+            max-width: 500px;
+            margin: 100px auto;
+            background: linear-gradient(145deg, rgba(26, 31, 58, 0.95), rgba(10, 14, 39, 0.95));
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            text-align: center;
+        }
+
+        .login-screen h2 {
+            font-family: 'Righteous', cursive;
+            color: var(--gold);
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            color: var(--gold);
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            color: white;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .suggestions {
+            background: rgba(26, 31, 58, 0.95);
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            margin-top: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+            text-align: left;
+        }
+
+        .suggestion-item {
+            padding: 12px;
+            cursor: pointer;
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+        .suggestion-item:hover {
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--purple), #7209B7);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(157, 78, 221, 0.5);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .wheel-section {
+            background: linear-gradient(145deg, rgba(26, 31, 58, 0.95), rgba(10, 14, 39, 0.95));
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            width: 0;
+            height: 0;
+            border-left: 35px solid transparent;
+            border-right: 35px solid transparent;
+            border-top: 70px solid var(--red);
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.7));
+        }
+
+        .wheel-outer {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-shadow: 
+                0 0 0 20px var(--gold),
+                0 0 0 25px var(--bg-dark),
+                0 0 60px rgba(255, 215, 0, 0.6);
+            position: relative;
+        }
+
+        .wheel-rotate {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            overflow: hidden;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            color: var(--bg-dark);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.9);
+            z-index: 50;
+            border: 5px solid white;
+        }
+
+        .controls {
+            text-align: center;
+        }
+
+        .spin-btn {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2.2rem;
+            padding: 25px 70px;
+            background: linear-gradient(135deg, var(--red), #C1121F);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(230, 57, 70, 0.4);
+            transition: all 0.3s ease;
+            letter-spacing: 3px;
+        }
+
+        .spin-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(230, 57, 70, 0.6);
+        }
+
+        .spin-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .spins-left {
+            margin-top: 20px;
+            font-size: 1.4rem;
+            color: var(--gold);
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel {
+            background: linear-gradient(145deg, rgba(26, 31, 58, 0.95), rgba(10, 14, 39, 0.95));
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .panel h2 {
+            font-family: 'Righteous', cursive;
+            color: var(--gold);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .current-player {
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.2), rgba(114, 9, 183, 0.2));
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .player-name {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .player-score {
+            font-size: 2.5rem;
+            color: var(--green);
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(6, 214, 160, 0.6);
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--purple), #7209B7);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(157, 78, 221, 0.4);
+        }
+
+        .leaderboard {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .leaderboard-item:hover {
+            background: rgba(255, 215, 0, 0.1);
+            transform: translateX(5px);
+        }
+
+        .leaderboard-item.rank-1 {
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.05));
+            border-left: 4px solid var(--gold);
+        }
+
+        .leaderboard-item.rank-2 {
+            background: linear-gradient(90deg, rgba(192, 192, 192, 0.2), rgba(192, 192, 192, 0.05));
+            border-left: 4px solid #C0C0C0;
+        }
+
+        .leaderboard-item.rank-3 {
+            background: linear-gradient(90deg, rgba(205, 127, 50, 0.2), rgba(205, 127, 50, 0.05));
+            border-left: 4px solid #CD7F32;
+        }
+
+        .delete-btn {
+            background: var(--red);
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+
+        .rank {
+            font-weight: bold;
+            color: var(--gold);
+            margin-right: 10px;
+        }
+
+        .player-info {
+            flex: 1;
+            color: white;
+        }
+
+        .score {
+            font-weight: bold;
+            color: var(--green);
+            font-size: 1.2rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .result-display {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(145deg, var(--gold), var(--gold-dark));
+            padding: 60px;
+            border-radius: 30px;
+            box-shadow: 0 0 0 10px white, 0 0 0 15px var(--gold), 0 30px 80px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            text-align: center;
+            animation: resultPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        @keyframes resultPop {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(-180deg); }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+        }
+
+        .result-display h3 {
+            font-family: 'Bangers', cursive;
+            font-size: 4rem;
+            color: var(--bg-dark);
+            margin-bottom: 20px;
+        }
+
+        .result-points {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 6rem;
+            color: white;
+            text-shadow: 4px 4px 0 var(--red);
+            animation: pointsPulse 0.5s ease-in-out 3;
+        }
+
+        @keyframes pointsPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 999;
+            backdrop-filter: blur(5px);
+        }
+
+        .admin-login-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(145deg, rgba(10, 14, 39, 0.98), rgba(26, 31, 58, 0.98));
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            border: 3px solid var(--gold);
+            z-index: 1000;
+            min-width: 400px;
+        }
+
+        .admin-login-panel h2 {
+            font-family: 'Righteous', cursive;
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .main-content { grid-template-columns: 1fr; }
+            .wheel-container { width: 500px; height: 500px; }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        for (let i = 0; i < 50; i++) {
+            const s = document.createElement('div');
+            s.className = 'sparkle';
+            s.style.left = Math.random() * 100 + '%';
+            s.style.top = Math.random() * 100 + '%';
+            s.style.animationDelay = Math.random() * 3 + 's';
+            document.body.appendChild(s);
+        }
+    </script>
+
+    <div class="music-control" id="musicControl">
+        <span id="musicStatus">🔊 Music ON</span>
+    </div>
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" class="login-screen">
+        <div class="header">
+            <h1>TGC WHEEL OF FORTUNE</h1>
+            <div class="subtitle">Spin & Win!</div>
+        </div>
+        <h2>Who are you?</h2>
+        <div class="input-group">
+            <label>Enter your username:</label>
+            <input type="text" id="usernameInput" placeholder="Your username..." autocomplete="off">
+            <div id="suggestions" class="suggestions hidden"></div>
+        </div>
+        <button class="btn-primary" id="loginBtn">Enter Game</button>
+    </div>
+
+    <!-- ADMIN PASSWORD PANEL -->
+    <div class="overlay hidden" id="adminOverlay"></div>
+    <div class="admin-login-panel hidden" id="adminPanel">
+        <h2>🔐 Admin Access</h2>
+        <div class="input-group">
+            <label>Password:</label>
+            <input type="password" id="adminPassword" placeholder="Enter admin password">
+        </div>
+        <button class="btn-primary" id="adminLoginBtn">Login as Admin</button>
+        <button class="btn-secondary" id="adminCancelBtn" style="background: #666;">Cancel</button>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div id="gameScreen" class="container hidden">
+        <div class="header">
+            <h1>TGC WHEEL OF FORTUNE</h1>
+            <div class="subtitle">Spin & Win!</div>
+        </div>
+
+        <div class="main-content">
+            <div class="wheel-section">
+                <div class="wheel-container">
+                    <div class="wheel-pointer"></div>
+                    <div class="wheel-outer">
+                        <div class="wheel-rotate" id="wheelRotate">
+                            <canvas id="wheelCanvas" width="600" height="600"></canvas>
+                        </div>
+                        <div class="wheel-center">SPIN!</div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button class="spin-btn" id="spinBtn" disabled>SPIN THE WHEEL!</button>
+                    <div class="spins-left" id="spinsLeft">Please wait...</div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="panel">
+                    <h2>Current Player</h2>
+                    <div class="current-player">
+                        <div class="player-name" id="currentPlayerName">-</div>
+                        <div class="player-score" id="currentPlayerScore">0 pts</div>
+                    </div>
+                    <button class="btn-secondary" id="redeemBtn">Redeem Points</button>
+                    <button class="btn-secondary" id="logoutBtn">Logout</button>
+                </div>
+
+                <div class="panel">
+                    <h2>🏆 Leaderboard</h2>
+                    <div class="leaderboard" id="leaderboard">
+                        <div style="text-align: center; color: #666; padding: 20px;">Loading...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // MEMBER LIST (without gus - he uses password)
+        const MEMBERS = ["Almostn33t", "Atro", "BaconChizBurger", "Bainsol", "BarbaricGenie", "BorjaGRouco", "Carenard", "Ch1cWolf", "CosmicDrink", "CuteEnby", "Damianea103", "Dandellion", "DoubleOmurfy", "DrTenma", "Eindirk", "Griske14", "HUMoonlight", "Ignition365", "Ivannes", "Jztr", "Krystie", "Lontaz", "LumpyCreature", "Mourinhos86", "Makki", "Markox21", "MedinaRoscoe", "Metalhead8489", "MikewithAnI", "MrOuiOui", "Noodles91", "Orionid", "Patzl", "PoeticKatana", "QuinlanLJ", "RePlayBe", "Rinocap", "Sakakino", "DanielStoSve", "Shughes91", "SoullessSoup", "SunnySideVp", "TempR", "Thexder", "Tucs", "TwixClub", "Vampiresska", "VenomousNyx", "Vin3", "Vini1", "Vot4ol", "Waxlor", "Yugimax", "Yukisuna", "akfas", "ithamore", "LieEater", "schmoan", "yamaraus", "yannbz", "VinroyIsViral", "Lilyhia", "CatzZz", "PsychoApeMan", "Gooberdragon"];
+
+        const COLORS = ['#E63946', '#F77F00', '#FFD60A', '#06D6A0', '#118AB2', '#9D4EDD', '#2A9D8F', '#E76F51', '#264653', '#8B5CF6', '#10B981', '#F59E0B', '#8338EC', '#FB5607', '#3A86FF', '#06FFA5'];
+        const VALUES = [5, 10, 5, 20, 5, 10, 5, 30, 5, 10, 5, 20, 5, 10, 5, 50];
+
+        // Audio
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+        let musicOn = false;
+
+        const melody = [
+            {f: 523, d: 0.15}, {f: 659, d: 0.15}, {f: 784, d: 0.15}, {f: 1047, d: 0.3},
+            {f: 784, d: 0.15}, {f: 659, d: 0.15}, {f: 523, d: 0.3}, {f: 659, d: 0.15},
+            {f: 784, d: 0.15}, {f: 1047, d: 0.3}, {f: 1175, d: 0.15}, {f: 1047, d: 0.15},
+            {f: 880, d: 0.3}, {f: 784, d: 0.3}
+        ];
+
+        function playNote(freq, dur, time) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.frequency.value = freq;
+            osc.type = 'triangle';
+            gain.gain.setValueAtTime(0.12, time);
+            gain.gain.exponentialRampToValueAtTime(0.01, time + dur);
+            osc.start(time);
+            osc.stop(time + dur);
+        }
+
+        function playMusic() {
+            if (!musicOn) return;
+            let t = audioCtx.currentTime;
+            melody.forEach(n => {
+                playNote(n.f, n.d, t);
+                t += n.d;
+            });
+            setTimeout(playMusic, (t - audioCtx.currentTime + 1) * 1000);
+        }
+
+        document.getElementById('musicControl').onclick = () => {
+            musicOn = !musicOn;
+            document.getElementById('musicStatus').textContent = musicOn ? '🔊 Music ON' : '🔇 Music OFF';
+            if (musicOn) playMusic();
+        };
+
+        function playTone(f, d) {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.frequency.value = f;
+            o.type = 'sine';
+            g.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + d);
+            o.start();
+            o.stop(audioCtx.currentTime + d);
+        }
+
+        // Draw wheel with FIXED UPRIGHT NUMBERS
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        const centerX = 300;
+        const centerY = 300;
+        const radius = 300;
+        const anglePerSegment = (2 * Math.PI) / 16;
+
+        function drawWheel() {
+            ctx.clearRect(0, 0, 600, 600);
+            
+            for (let i = 0; i < 16; i++) {
+                const startAngle = i * anglePerSegment - Math.PI / 2;
+                const endAngle = startAngle + anglePerSegment;
+
+                // Draw segment
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = COLORS[i];
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Draw number - ALWAYS UPRIGHT (not rotating with wheel)
+                const angle = startAngle + anglePerSegment / 2;
+                const textDist = radius * 0.65;
+                const x = centerX + Math.cos(angle) * textDist;
+                const y = centerY + Math.sin(angle) * textDist;
+
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(angle + Math.PI / 2); // Keep numbers upright
+                ctx.fillStyle = 'white';
+                ctx.strokeStyle = 'rgba(0,0,0,0.9)';
+                ctx.lineWidth = 5;
+                ctx.font = 'bold 50px Poppins';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.strokeText(VALUES[i], 0, 0);
+                ctx.fillText(VALUES[i], 0, 0);
+                ctx.restore();
+            }
+        }
+
+        drawWheel();
+
+        // Game state with CLOUD STORAGE (shared: true means global for all users)
+        let state = {
+            players: [],
+            current: null,
+            spinsLeft: 0,
+            spinning: false,
+            isAdmin: false,
+            rotation: 0
+        };
+
+        // CLOUD STORAGE - shared: true makes it global across all users
+        async function loadPlayers() {
+            try {
+                const result = await window.storage.get('tgc-wheel-global-v1', true); // true = shared globally
+                if (result && result.value) {
+                    state.players = JSON.parse(result.value);
+                    updateLeaderboard();
+                }
+            } catch (e) {
+                state.players = [];
+            }
+        }
+
+        async function savePlayers() {
+            try {
+                await window.storage.set('tgc-wheel-global-v1', JSON.stringify(state.players), true); // true = shared globally
+            } catch (e) {
+                console.error('Cloud save error:', e);
+            }
+        }
+
+        async function deletePlayer(name) {
+            if (!state.isAdmin) return;
+            if (confirm(`Delete ${name}?`)) {
+                state.players = state.players.filter(p => p.name !== name);
+                await savePlayers();
+                await loadPlayers();
+            }
+        }
+
+        // Login suggestions
+        const usernameInput = document.getElementById('usernameInput');
+        const suggestions = document.getElementById('suggestions');
+
+        usernameInput.addEventListener('input', () => {
+            const val = usernameInput.value.toLowerCase();
+            if (!val) {
+                suggestions.classList.add('hidden');
+                return;
+            }
+            
+            // Check if typing "gus"
+            if (val === 'gus' || 'gus'.startsWith(val)) {
+                suggestions.innerHTML = '<div class="suggestion-item" onclick="selectUser(\'gus\')">gus (Admin)</div>';
+                suggestions.classList.remove('hidden');
+                return;
+            }
+            
+            const matches = MEMBERS.filter(m => m.toLowerCase().includes(val));
+            if (matches.length) {
+                suggestions.innerHTML = matches.map(m => 
+                    `<div class="suggestion-item" onclick="selectUser('${m}')">${m}</div>`
+                ).join('');
+                suggestions.classList.remove('hidden');
+            } else {
+                suggestions.classList.add('hidden');
+            }
+        });
+
+        function selectUser(name) {
+            usernameInput.value = name;
+            suggestions.classList.add('hidden');
+        }
+
+        // Admin panel handlers
+        document.getElementById('adminLoginBtn').onclick = async () => {
+            const pwd = document.getElementById('adminPassword').value;
+            if (pwd === 'TGCWHEEL') {
+                state.isAdmin = true;
+                state.current = {name: 'Gus (Admin)', score: 0, spinsUsed: 0};
+                state.spinsLeft = 999;
+                document.getElementById('adminOverlay').classList.add('hidden');
+                document.getElementById('adminPanel').classList.add('hidden');
+                showGame();
+                await loadPlayers();
+                alert('Welcome Admin Gus!');
+            } else {
+                alert('Wrong password!');
+                document.getElementById('adminPassword').value = '';
+            }
+        };
+
+        document.getElementById('adminCancelBtn').onclick = () => {
+            document.getElementById('adminOverlay').classList.add('hidden');
+            document.getElementById('adminPanel').classList.add('hidden');
+            document.getElementById('adminPassword').value = '';
+        };
+
+        // Login button
+        document.getElementById('loginBtn').onclick = async () => {
+            const input = usernameInput.value.trim();
+            if (!input) {
+                alert('Please enter your username!');
+                return;
+            }
+
+            // Check if it's gus
+            if (input.toLowerCase() === 'gus') {
+                document.getElementById('adminOverlay').classList.remove('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
+                return;
+            }
+
+            // Check if member
+            const member = MEMBERS.find(m => m.toLowerCase() === input.toLowerCase());
+            if (!member) {
+                alert('You are not on the member list!');
+                return;
+            }
+
+            await loadPlayers();
+            let player = state.players.find(p => p.name === member);
+            if (!player) {
+                player = {name: member, score: 0, spinsUsed: 0};
+                state.players.push(player);
+                await savePlayers();
+            }
+
+            if (player.spinsUsed >= 3) {
+                alert('You have already used all 3 spins!');
+                state.current = player;
+                state.spinsLeft = 0;
+                showGame();
+                document.getElementById('spinBtn').disabled = true;
+                return;
+            }
+
+            state.current = player;
+            state.spinsLeft = 3 - player.spinsUsed;
+            showGame();
+            document.getElementById('spinBtn').disabled = false;
+        };
+
+        function showGame() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+            updateDisplay();
+        }
+
+        document.getElementById('logoutBtn').onclick = () => {
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+            usernameInput.value = '';
+            state.current = null;
+            state.spinsLeft = 0;
+            state.isAdmin = false;
+        };
+
+        document.getElementById('spinBtn').onclick = async () => {
+            if (state.spinning || state.spinsLeft <= 0) return;
+
+            state.spinning = true;
+            state.spinsLeft--;
+            state.current.spinsUsed++;
+            document.getElementById('spinBtn').disabled = true;
+            playTone(200, 0.1);
+
+            const spins = 5 + Math.random() * 3;
+            const targetSeg = Math.floor(Math.random() * 16);
+            const targetAngle = targetSeg * (360 / 16) + (360 / 32);
+            const total = spins * 360 + targetAngle;
+
+            state.rotation += total;
+            document.getElementById('wheelRotate').style.transform = `rotate(${state.rotation}deg)`;
+
+            let tick = setInterval(() => playTone(800, 0.05), 100);
+            setTimeout(() => clearInterval(tick), 3500);
+
+            setTimeout(async () => {
+                const norm = state.rotation % 360;
+                const adj = (360 - norm) % 360;
+                const segIdx = Math.floor(adj / (360 / 16)) % 16;
+                const pts = VALUES[segIdx];
+
+                state.current.score += pts;
+
+                if (!state.isAdmin) {
+                    const idx = state.players.findIndex(p => p.name === state.current.name);
+                    if (idx !== -1) state.players[idx] = state.current;
+                    await savePlayers();
+                }
+
+                showResult(pts);
+                playTone(523, 0.2);
+                setTimeout(() => playTone(659, 0.2), 200);
+                setTimeout(() => playTone(784, 0.3), 400);
+
+                updateDisplay();
+                await loadPlayers();
+
+                state.spinning = false;
+                if (state.spinsLeft > 0 || state.isAdmin) {
+                    document.getElementById('spinBtn').disabled = false;
+                }
+            }, 4000);
+        };
+
+        function showResult(pts) {
+            const r = document.createElement('div');
+            r.className = 'result-display';
+            r.innerHTML = `<h3>YOU WON!</h3><div class="result-points">${pts} POINTS</div>`;
+            const o = document.createElement('div');
+            o.className = 'overlay';
+            document.body.appendChild(o);
+            document.body.appendChild(r);
+            setTimeout(() => { r.remove(); o.remove(); }, 3000);
+        }
+
+        function updateDisplay() {
+            if (state.current) {
+                document.getElementById('currentPlayerName').textContent = state.current.name;
+                document.getElementById('currentPlayerScore').textContent = `${state.current.score} pts`;
+                document.getElementById('spinsLeft').textContent = state.isAdmin ? 
+                    'Spins remaining: ∞' : `Spins remaining: ${state.spinsLeft}`;
+            }
+        }
+
+        function updateLeaderboard() {
+            const lb = document.getElementById('leaderboard');
+            if (!state.players.length) {
+                lb.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">No players yet!</div>';
+                return;
+            }
+            const sorted = [...state.players].sort((a,b) => b.score - a.score);
+            lb.innerHTML = sorted.map((p, i) => `
+                <div class="leaderboard-item rank-${i+1}">
+                    <span class="rank">#${i+1}</span>
+                    <span class="player-info">${p.name}</span>
+                    <span class="score">${p.score} pts</span>
+                    ${state.isAdmin ? `<button class="delete-btn" onclick="deletePlayer('${p.name}')">🗑️</button>` : ''}
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('redeemBtn').onclick = () => {
+            alert('Prize redemption system coming soon!');
+        };
+
+        window.onload = async () => {
+            await loadPlayers();
+            musicOn = true;
+            playMusic();
+        };
+
+        // Auto-refresh leaderboard every 2 seconds for REAL-TIME updates
+        setInterval(loadPlayers, 2000);
+    </script>
+</body>
+</html>
