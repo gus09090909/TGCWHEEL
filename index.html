@@ -848,87 +848,23 @@
         const COLORS = ['#E63946', '#F77F00', '#FFD60A', '#06D6A0', '#118AB2', '#9D4EDD', '#2A9D8F', '#E76F51', '#264653', '#8B5CF6', '#10B981', '#F59E0B', '#8338EC', '#FB5607', '#3A86FF', '#06FFA5'];
         const VALUES = [5, 10, 5, 20, 5, 10, 5, 30, 5, 10, 5, 20, 5, 10, 5, 50];
 
-        // PRIZES LIST
-        const PRIZES = [
-            {
-                name: "GRIP: Combat Racing",
-                points: 5,
-                steamgifts: "https://www.steamgifts.com/giveaway/EYIKn/grip-combat-racing",
-                steam: "https://store.steampowered.com/app/396900/GRIP_Combat_Racing/"
-            },
-            {
-                name: "Evoland Legendary Edition",
-                points: 5,
-                steamgifts: "https://www.steamgifts.com/giveaway/yO1I0/evoland-legendary-edition",
-                steam: "https://store.steampowered.com/app/1020470/Evoland_Legendary_Edition/"
-            },
-            {
-                name: "Dust & Neon",
-                points: 5,
-                steamgifts: "https://www.steamgifts.com/giveaway/EEa6l/dust-neon",
-                steam: "https://store.steampowered.com/app/1296450/Dust__Neon/"
-            },
-            {
-                name: "Wonderputt Forever",
-                points: 5,
-                steamgifts: "https://www.steamgifts.com/giveaway/JBBQS/wonderputt-forever",
-                steam: "https://store.steampowered.com/app/1766540/Wonderputt_Forever/"
-            },
-            {
-                name: "Dragon Spirits",
-                points: 5,
-                steamgifts: "https://www.steamgifts.com/giveaway/s7tWw/dragon-spirits",
-                steam: "https://store.steampowered.com/app/1074190/Dragon_Spirits/"
-            },
-            {
-                name: "CARNAGE OFFERING",
-                points: 5,
-                steamgifts: "https://www.steamgifts.com/giveaway/opsZU/carnage-offering",
-                steam: "https://store.steampowered.com/app/1756180/CARNAGE_OFFERING/"
-            },
-            {
-                name: "Techno Banter",
-                points: 10,
-                steamgifts: "https://www.steamgifts.com/giveaway/RNFo9/techno-banter",
-                steam: "https://store.steampowered.com/app/2348400/Techno_Banter/"
-            },
-            {
-                name: "Escape From Lavender Island",
-                points: 10,
-                steamgifts: "https://www.steamgifts.com/giveaway/6ngjk/escape-from-lavender-island",
-                steam: "https://store.steampowered.com/app/2164310/Escape_From_Lavender_Island/"
-            },
-            {
-                name: "ASTRONEER",
-                points: 10,
-                steamgifts: "https://www.steamgifts.com/giveaway/6s8vg/astroneer",
-                steam: "https://store.steampowered.com/app/361420/ASTRONEER/"
-            },
-            {
-                name: "Solasta: Crown of the Magister",
-                points: 15,
-                steamgifts: "https://www.steamgifts.com/giveaway/3yW4M/solasta-crown-of-the-magister",
-                steam: "https://store.steampowered.com/app/1096530/Solasta_Crown_of_the_Magister/"
-            },
-            {
-                name: "Alone in the Dark",
-                points: 15,
-                steamgifts: "https://www.steamgifts.com/giveaway/cOUeZ/alone-in-the-dark",
-                steam: "https://store.steampowered.com/app/1310410/Alone_in_the_Dark/"
-            },
-            {
-                name: "Blue Prince",
-                points: 20,
-                steamgifts: "https://www.steamgifts.com/giveaway/4PPt2/blue-prince",
-                steam: "https://store.steampowered.com/app/1569580/Blue_Prince/"
-            },
-            {
-                name: "DOOM: The Dark Ages",
-                points: 40,
-                steamgifts: "https://www.steamgifts.com/giveaway/yd92N/doom-the-dark-ages",
-                steam: "https://store.steampowered.com/app/3017860/DOOM_The_Dark_Ages/"
-            }
-        ];
+        // Obfuscated prize data (base64 encoded)
+        const _p = 'W3sibmFtZSI6IkdSSVA6IENvbWJhdCBSYWNpbmciLCJwb2ludHMiOjUsInNnIjoiaHR0cHM6Ly93d3cuc3RlYW1naWZ0cy5jb20vZ2l2ZWF3YXkvRVlJS24vZ3JpcC1jb21iYXQtcmFjaW5nIiwic3QiOiJodHRwczovL3N0b3JlLnN0ZWFtcG93ZXJlZC5jb20vYXBwLzM5NjkwMC9HUklQX0NvbWJhdF9SYWNpbmcvIn0seyJuYW1lIjoiRXZvbGFuZCBMZWdlbmRhcnkgRWRpdGlvbiIsInBvaW50cyI6NSwic2ciOiJodHRwczovL3d3dy5zdGVhbWdpZnRzLmNvbS9naXZlYXdheS95TzFJMC9ldm9sYW5kLWxlZ2VuZGFyeS1lZGl0aW9uIiwic3QiOiJodHRwczovL3N0b3JlLnN0ZWFtcG93ZXJlZC5jb20vYXBwLzEwMjA0NzAvRXZvbGFuZF9MZWdlbmRhcnlfRWRpdGlvbi8ifSx7Im5hbWUiOiJEdXN0ICYgTmVvbiIsInBvaW50cyI6NSwic2ciOiJodHRwczovL3d3dy5zdGVhbWdpZnRzLmNvbS9naXZlYXdheS9FRWE2bC9kdXN0LW5lb24iLCJzdCI6Imh0dHBzOi8vc3RvcmUuc3RlYW1wb3dlcmVkLmNvbS9hcHAvMTI5NjQ1MC9EdXN0X19OZW9uLyJ9LHsibmFtZSI6IldvbmRlcnB1dHQgRm9yZXZlciIsInBvaW50cyI6NSwic2ciOiJodHRwczovL3d3dy5zdGVhbWdpZnRzLmNvbS9naXZlYXdheS9KQkJRUy93b25kZXJwdXR0LWZvcmV2ZXIiLCJzdCI6Imh0dHBzOi8vc3RvcmUuc3RlYW1wb3dlcmVkLmNvbS9hcHAvMTc2NjU0MC9Xb25kZXJwdXR0X0ZvcmV2ZXIvIn0seyJuYW1lIjoiRHJhZ29uIFNwaXJpdHMiLCJwb2ludHMiOjUsInNnIjoiaHR0cHM6Ly93d3cuc3RlYW1naWZ0cy5jb20vZ2l2ZWF3YXkvczd0V3cvZHJhZ29uLXNwaXJpdHMiLCJzdCI6Imh0dHBzOi8vc3RvcmUuc3RlYW1wb3dlcmVkLmNvbS9hcHAvMTA3NDE5MC9EcmFnb25fU3Bpcml0cy8ifSx7Im5hbWUiOiJDQVJOQUdFIE9GRkVSSU5HIiwicG9pbnRzIjo1LCJzZyI6Imh0dHBzOi8vd3d3LnN0ZWFtZ2lmdHMuY29tL2dpdmVhd2F5L29wc1pVL2Nhcm5hZ2Utb2ZmZXJpbmciLCJzdCI6Imh0dHBzOi8vc3RvcmUuc3RlYW1wb3dlcmVkLmNvbS9hcHAvMTc1NjE4MC9DQVJOQURFX09GRkVSSU5HLyJ9LHsibmFtZSI6IlRlY2hubyBCYW50ZXIiLCJwb2ludHMiOjEwLCJzZyI6Imh0dHBzOi8vd3d3LnN0ZWFtZ2lmdHMuY29tL2dpdmVhd2F5L1JORm85L3RlY2huby1iYW50ZXIiLCJzdCI6Imh0dHBzOi8vc3RvcmUuc3RlYW1wb3dlcmVkLmNvbS9hcHAvMjM0ODQwMC9UZWNobm9fQmFudGVyLyJ9LHsibmFtZSI6IkVzY2FwZSBGcm9tIExhdmVuZGVyIElzbGFuZCIsInBvaW50cyI6MTAsInNnIjoiaHR0cHM6Ly93d3cuc3RlYW1naWZ0cy5jb20vZ2l2ZWF3YXkvNm5namsvZXNjYXBlLWZyb20tbGF2ZW5kZXItaXNsYW5kIiwic3QiOiJodHRwczovL3N0b3JlLnN0ZWFtcG93ZXJlZC5jb20vYXBwLzIxNjQzMTAvRXNjYXBlX0Zyb21fTGF2ZW5kZXJfSXNsYW5kLyJ9LHsibmFtZSI6IkFTVFJPTkVFUiIsInBvaW50cyI6MTAsInNnIjoiaHR0cHM6Ly93d3cuc3RlYW1naWZ0cy5jb20vZ2l2ZWF3YXkvNnM4dmcvYXN0cm9uZWVyIiwic3QiOiJodHRwczovL3N0b3JlLnN0ZWFtcG93ZXJlZC5jb20vYXBwLzM2MTQyMC9BU1RST05FRVIvIn0seyJuYW1lIjoiU29sYXN0YTogQ3Jvd24gb2YgdGhlIE1hZ2lzdGVyIiwicG9pbnRzIjoxNSwic2ciOiJodHRwczovL3d3dy5zdGVhbWdpZnRzLmNvbS9naXZlYXdheS8zeVc0TS9zb2xhc3RhLWNyb3duLW9mLXRoZS1tYWdpc3RlciIsInN0IjoiaHR0cHM6Ly9zdG9yZS5zdGVhbXBvd2VyZWQuY29tL2FwcC8xMDk2NTMwL1NvbGFzdGFfQ3Jvd25fb2ZfdGhlX01hZ2lzdGVyLyJ9LHsibmFtZSI6IkFsb25lIGluIHRoZSBEYXJrIiwicG9pbnRzIjoxNSwic2ciOiJodHRwczovL3d3dy5zdGVhbWdpZnRzLmNvbS9naXZlYXdheS9jT1VlWi9hbG9uZS1pbi10aGUtZGFyayIsInN0IjoiaHR0cHM6Ly9zdG9yZS5zdGVhbXBvd2VyZWQuY29tL2FwcC8xMzEwNDEwL0Fsb25lX2luX3RoZV9EYXJrLyJ9LHsibmFtZSI6IkJsdWUgUHJpbmNlIiwicG9pbnRzIjoyMCwic2ciOiJodHRwczovL3d3dy5zdGVhbWdpZnRzLmNvbS9naXZlYXdheS80UFB0Mi9ibHVlLXByaW5jZSIsInN0IjoiaHR0cHM6Ly9zdG9yZS5zdGVhbXBvd2VyZWQuY29tL2FwcC8xNTY5NTgwL0JsdWVfUHJpbmNlLyJ9LHsibmFtZSI6IkRPT006IFRoZSBEYXJrIEFnZXMiLCJwb2ludHMiOjQwLCJzZyI6Imh0dHBzOi8vd3d3LnN0ZWFtZ2lmdHMuY29tL2dpdmVhd2F5L3lkOTJOL2Rvb20tdGhlLWRhcmstYWdlcyIsInN0IjoiaHR0cHM6Ly9zdG9yZS5zdGVhbXBvd2VyZWQuY29tL2FwcC8zMDE3ODYwL0RPT01fVGhlX0RhcmtfQWdlcy8ifV0=';
+        
+        // Decode prizes on load
+        const PRIZES = JSON.parse(atob(_p)).map(p => ({
+            name: p.name,
+            points: p.points,
+            steamgifts: p.sg,
+            steam: p.st
+        }));
+
+        // Obfuscated link opener
+        window._ol = function(idx, type) {
+            const p = PRIZES[idx];
+            const url = type === 's' ? p.steam : p.steamgifts;
+            window.open(url, '_blank');
+        };
 
         // Firebase Config
         const firebaseConfig = {
@@ -956,40 +892,94 @@
         const audioCtx = new AudioContext();
         let musicOn = false;
 
-        const melody = [
-            {f: 523, d: 0.15}, {f: 659, d: 0.15}, {f: 784, d: 0.15}, {f: 1047, d: 0.3},
-            {f: 784, d: 0.15}, {f: 659, d: 0.15}, {f: 523, d: 0.3}, {f: 659, d: 0.15},
-            {f: 784, d: 0.15}, {f: 1047, d: 0.3}, {f: 1175, d: 0.15}, {f: 1047, d: 0.15},
-            {f: 880, d: 0.3}, {f: 784, d: 0.3}
+        // Professional game show theme - more complex and exciting
+        const gameShowTheme = [
+            // Intro fanfare
+            {notes: [523, 659, 784], dur: 0.3, vol: 0.08},
+            {notes: [659, 784, 988], dur: 0.3, vol: 0.08},
+            {notes: [784, 988, 1175], dur: 0.4, vol: 0.1},
+            {notes: [], dur: 0.1, vol: 0},
+            
+            // Main melody
+            {notes: [1047], dur: 0.25, vol: 0.09},
+            {notes: [988], dur: 0.25, vol: 0.08},
+            {notes: [880], dur: 0.25, vol: 0.08},
+            {notes: [784], dur: 0.25, vol: 0.08},
+            {notes: [880], dur: 0.5, vol: 0.09},
+            {notes: [], dur: 0.1, vol: 0},
+            
+            {notes: [1047], dur: 0.25, vol: 0.09},
+            {notes: [1175], dur: 0.25, vol: 0.09},
+            {notes: [1319], dur: 0.5, vol: 0.1},
+            {notes: [1175], dur: 0.25, vol: 0.08},
+            {notes: [1047], dur: 0.5, vol: 0.09},
+            {notes: [], dur: 0.1, vol: 0},
+            
+            // Chord progression
+            {notes: [659, 784, 988], dur: 0.4, vol: 0.08},
+            {notes: [698, 831, 1047], dur: 0.4, vol: 0.08},
+            {notes: [784, 988, 1175], dur: 0.6, vol: 0.09},
+            {notes: [], dur: 0.2, vol: 0}
         ];
 
-        function playNote(freq, dur, time) {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.frequency.value = freq;
-            osc.type = 'triangle';
-            gain.gain.setValueAtTime(0.12, time);
-            gain.gain.exponentialRampToValueAtTime(0.01, time + dur);
-            osc.start(time);
-            osc.stop(time + dur);
+        let currentMusicTimeout = null;
+
+        function playChord(frequencies, duration, volume, time, type = 'sine') {
+            frequencies.forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.frequency.value = freq;
+                osc.type = type;
+                
+                // Slightly different volume for each note in chord for richness
+                const noteVol = volume * (1 - i * 0.1);
+                gain.gain.setValueAtTime(noteVol, time);
+                gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
+                
+                osc.start(time);
+                osc.stop(time + duration);
+            });
         }
 
         function playMusic() {
             if (!musicOn) return;
-            let t = audioCtx.currentTime;
-            melody.forEach(n => {
-                playNote(n.f, n.d, t);
-                t += n.d;
+            
+            let currentTime = audioCtx.currentTime;
+            
+            gameShowTheme.forEach(section => {
+                if (section.notes.length > 0) {
+                    // Play with sine wave for melody
+                    playChord(section.notes, section.dur, section.vol, currentTime, 'sine');
+                    
+                    // Add subtle triangle wave for warmth
+                    if (section.notes.length === 1) {
+                        playChord(section.notes, section.dur, section.vol * 0.3, currentTime, 'triangle');
+                    }
+                }
+                currentTime += section.dur;
             });
-            setTimeout(playMusic, (t - audioCtx.currentTime + 1) * 1000);
+            
+            // Schedule next loop
+            const loopDelay = (currentTime - audioCtx.currentTime + 2) * 1000;
+            currentMusicTimeout = setTimeout(playMusic, loopDelay);
         }
 
         document.getElementById('musicControl').onclick = () => {
             musicOn = !musicOn;
             document.getElementById('musicStatus').textContent = musicOn ? '🔊 Music ON' : '🔇 Music OFF';
-            if (musicOn) playMusic();
+            
+            if (musicOn) {
+                playMusic();
+            } else {
+                if (currentMusicTimeout) {
+                    clearTimeout(currentMusicTimeout);
+                    currentMusicTimeout = null;
+                }
+            }
         };
 
         function playTone(f, d) {
@@ -999,8 +989,8 @@
             g.connect(audioCtx.destination);
             o.frequency.value = f;
             o.type = 'sine';
-            g.gain.setValueAtTime(0.3, audioCtx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + d);
+            g.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + d);
             o.start();
             o.stop(audioCtx.currentTime + d);
         }
@@ -1093,10 +1083,28 @@
 
         async function deletePlayer(name) {
             if (!state.isAdmin) return;
-            if (confirm(`Delete ${name}?`)) {
+            if (confirm(`Delete ${name}?\n\nThis will also delete all their redemptions.`)) {
+                // Delete player from players list
                 state.players = state.players.filter(p => p.name !== name);
-                await savePlayers();
-                await loadPlayers();
+                
+                // Delete from Firebase
+                if (database) {
+                    try {
+                        // Delete player
+                        await savePlayers();
+                        
+                        // Delete all their redemptions
+                        await database.ref(`redemptions/${name}`).remove();
+                        
+                        alert(`✅ ${name} and all their redemptions have been deleted.`);
+                        await loadPlayers();
+                    } catch (e) {
+                        console.error('Delete error:', e);
+                        alert('Error deleting player');
+                    }
+                } else {
+                    await loadPlayers();
+                }
             }
         }
 
@@ -1347,7 +1355,7 @@
                 }
             }
 
-            const prizeListHTML = PRIZES.map(prize => {
+            const prizeListHTML = PRIZES.map((prize, idx) => {
                 const alreadyRedeemed = redeemedGames.includes(prize.name);
                 const canAfford = state.current.score >= prize.points;
                 const disabled = alreadyRedeemed || !canAfford;
@@ -1358,18 +1366,18 @@
                             <h3>${prize.name}</h3>
                             <div class="prize-cost">${prize.points} points</div>
                             <div class="prize-links">
-                                <a href="${prize.steam}" target="_blank" class="prize-link steam">
+                                <button onclick="_ol(${idx},'s')" class="prize-link steam" style="cursor: pointer; background: rgba(27, 40, 56, 0.3); border: 2px solid #1b2838;">
                                     🎮 View on Steam
-                                </a>
+                                </button>
                             </div>
                         </div>
                         <div class="prize-actions">
                             ${alreadyRedeemed 
                                 ? `<div class="redeemed-badge">✓ Redeemed</div>
-                                   <a href="${prize.steamgifts}" target="_blank" class="prize-link" style="margin-top: 10px;">
+                                   <button onclick="_ol(${idx},'g')" class="prize-link" style="margin-top: 10px; cursor: pointer; background: rgba(157, 78, 221, 0.3); border: 2px solid var(--purple);">
                                        🎁 Go to Prize
-                                   </a>` 
-                                : `<button class="redeem-btn" onclick="redeemPrize('${prize.name}', ${prize.points}, '${prize.steamgifts}')" ${!canAfford ? 'disabled' : ''}>
+                                   </button>` 
+                                : `<button class="redeem-btn" onclick="redeemPrize(${idx})" ${!canAfford ? 'disabled' : ''}>
                                     ${canAfford ? '🎁 Redeem' : 'Not enough points'}
                                    </button>`
                             }
@@ -1415,11 +1423,18 @@
 
                 const historyHTML = allRedemptions.map(r => {
                     const date = new Date(r.timestamp);
+                    const redemptionKey = Object.keys(data[r.playerName]).find(key => 
+                        data[r.playerName][key].timestamp === r.timestamp
+                    );
+                    
                     return `
                         <div class="history-item">
                             <div class="player">${r.playerName}</div>
                             <div class="game">🎮 ${r.gameName} (${r.pointsCost} points)</div>
                             <div class="time">${date.toLocaleString()}</div>
+                            <button class="delete-btn" onclick="deleteRedemption('${r.playerName}', '${redemptionKey}', '${r.gameName}', ${r.pointsCost})" style="margin-top: 10px;">
+                                🗑️ Delete Redemption
+                            </button>
                         </div>
                     `;
                 }).join('');
@@ -1436,18 +1451,20 @@
             }
         }
 
-        window.redeemPrize = async function(gameName, pointsCost, steamgiftsUrl) {
-            if (state.current.score < pointsCost) {
+        window.redeemPrize = async function(prizeIdx) {
+            const prize = PRIZES[prizeIdx];
+            
+            if (state.current.score < prize.points) {
                 alert('Not enough points!');
                 return;
             }
 
-            if (!confirm(`Redeem "${gameName}" for ${pointsCost} points?\n\nThis will open SteamGifts where you can claim your prize!`)) {
+            if (!confirm(`Redeem "${prize.name}" for ${prize.points} points?\n\nThis will open SteamGifts where you can claim your prize!`)) {
                 return;
             }
 
             // Deduct points
-            state.current.score -= pointsCost;
+            state.current.score -= prize.points;
 
             // Update player in database
             const idx = state.players.findIndex(p => p.name === state.current.name);
@@ -1464,14 +1481,14 @@
                     // Save redemption record
                     const redemptionId = Date.now().toString();
                     await database.ref(`redemptions/${state.current.name}/${redemptionId}`).set({
-                        gameName: gameName,
-                        pointsCost: pointsCost,
-                        steamgiftsUrl: steamgiftsUrl,
+                        gameName: prize.name,
+                        pointsCost: prize.points,
+                        steamgiftsUrl: prize.steamgifts,
                         timestamp: Date.now()
                     });
 
                     // Open SteamGifts immediately
-                    window.open(steamgiftsUrl, '_blank');
+                    window.open(prize.steamgifts, '_blank');
                     
                     alert(`✅ Prize redeemed successfully!\n\nSteamGifts has been opened in a new tab.\nYou can always access it again from your redeemed prizes list.`);
                     
@@ -1482,12 +1499,12 @@
                     console.error('Redemption error:', e);
                     alert('Error redeeming prize. Please try again.');
                     // Restore points on error
-                    state.current.score += pointsCost;
+                    state.current.score += prize.points;
                 }
             } else {
                 // If database not available, still open the link
-                window.open(steamgiftsUrl, '_blank');
-                alert(`⚠️ Prize redeemed but not saved (database unavailable).\n\nSteamGifts link: ${steamgiftsUrl}`);
+                window.open(prize.steamgifts, '_blank');
+                alert(`⚠️ Prize redeemed but not saved (database unavailable).`);
                 updateDisplay();
             }
         }
@@ -1503,6 +1520,36 @@
         };
 
         window.deletePlayer = deletePlayer;
+
+        window.deleteRedemption = async function(playerName, redemptionKey, gameName, pointsCost) {
+            if (!state.isAdmin) return;
+            
+            if (!confirm(`Delete redemption?\n\nPlayer: ${playerName}\nGame: ${gameName}\nPoints: ${pointsCost}\n\nThis will restore ${pointsCost} points to the player.`)) {
+                return;
+            }
+
+            if (database) {
+                try {
+                    // Delete the redemption
+                    await database.ref(`redemptions/${playerName}/${redemptionKey}`).remove();
+                    
+                    // Restore points to player
+                    const playerIndex = state.players.findIndex(p => p.name === playerName);
+                    if (playerIndex !== -1) {
+                        state.players[playerIndex].score += pointsCost;
+                        await savePlayers();
+                    }
+                    
+                    alert(`✅ Redemption deleted and ${pointsCost} points restored to ${playerName}`);
+                    
+                    // Refresh the history
+                    await showAdminRedemptionHistory();
+                } catch (e) {
+                    console.error('Error deleting redemption:', e);
+                    alert('Error deleting redemption');
+                }
+            }
+        }
     </script>
 </body>
 </html>
