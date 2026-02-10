@@ -892,93 +892,25 @@
         const audioCtx = new AudioContext();
         let musicOn = false;
 
-        // Professional game show theme - more complex and exciting
-        const gameShowTheme = [
-            // Intro fanfare
-            {notes: [523, 659, 784], dur: 0.3, vol: 0.08},
-            {notes: [659, 784, 988], dur: 0.3, vol: 0.08},
-            {notes: [784, 988, 1175], dur: 0.4, vol: 0.1},
-            {notes: [], dur: 0.1, vol: 0},
-            
-            // Main melody
-            {notes: [1047], dur: 0.25, vol: 0.09},
-            {notes: [988], dur: 0.25, vol: 0.08},
-            {notes: [880], dur: 0.25, vol: 0.08},
-            {notes: [784], dur: 0.25, vol: 0.08},
-            {notes: [880], dur: 0.5, vol: 0.09},
-            {notes: [], dur: 0.1, vol: 0},
-            
-            {notes: [1047], dur: 0.25, vol: 0.09},
-            {notes: [1175], dur: 0.25, vol: 0.09},
-            {notes: [1319], dur: 0.5, vol: 0.1},
-            {notes: [1175], dur: 0.25, vol: 0.08},
-            {notes: [1047], dur: 0.5, vol: 0.09},
-            {notes: [], dur: 0.1, vol: 0},
-            
-            // Chord progression
-            {notes: [659, 784, 988], dur: 0.4, vol: 0.08},
-            {notes: [698, 831, 1047], dur: 0.4, vol: 0.08},
-            {notes: [784, 988, 1175], dur: 0.6, vol: 0.09},
-            {notes: [], dur: 0.2, vol: 0}
-        ];
+        // Background music - Quiz Master from Pixabay
+        const bgMusic = new Audio();
+        bgMusic.src = 'https://cdn.pixabay.com/download/audio/2024/12/24/audio_91b33dda96.mp3?filename=quiz-master-382651.mp3';
+        bgMusic.loop = true;
+        bgMusic.volume = 0.15; // Very low volume (15%)
+        bgMusic.preload = 'auto';
 
-        let currentMusicTimeout = null;
-
-        function playChord(frequencies, duration, volume, time, type = 'sine') {
-            frequencies.forEach((freq, i) => {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                
-                osc.frequency.value = freq;
-                osc.type = type;
-                
-                // Slightly different volume for each note in chord for richness
-                const noteVol = volume * (1 - i * 0.1);
-                gain.gain.setValueAtTime(noteVol, time);
-                gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
-                
-                osc.start(time);
-                osc.stop(time + duration);
-            });
-        }
-
-        function playMusic() {
-            if (!musicOn) return;
-            
-            let currentTime = audioCtx.currentTime;
-            
-            gameShowTheme.forEach(section => {
-                if (section.notes.length > 0) {
-                    // Play with sine wave for melody
-                    playChord(section.notes, section.dur, section.vol, currentTime, 'sine');
-                    
-                    // Add subtle triangle wave for warmth
-                    if (section.notes.length === 1) {
-                        playChord(section.notes, section.dur, section.vol * 0.3, currentTime, 'triangle');
-                    }
-                }
-                currentTime += section.dur;
-            });
-            
-            // Schedule next loop
-            const loopDelay = (currentTime - audioCtx.currentTime + 2) * 1000;
-            currentMusicTimeout = setTimeout(playMusic, loopDelay);
-        }
-
+        // Handle music control
         document.getElementById('musicControl').onclick = () => {
             musicOn = !musicOn;
             document.getElementById('musicStatus').textContent = musicOn ? '🔊 Music ON' : '🔇 Music OFF';
             
             if (musicOn) {
-                playMusic();
+                bgMusic.play().catch(e => {
+                    console.log('Audio play failed:', e);
+                    // Browsers require user interaction first
+                });
             } else {
-                if (currentMusicTimeout) {
-                    clearTimeout(currentMusicTimeout);
-                    currentMusicTimeout = null;
-                }
+                bgMusic.pause();
             }
         };
 
@@ -989,7 +921,7 @@
             g.connect(audioCtx.destination);
             o.frequency.value = f;
             o.type = 'sine';
-            g.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            g.gain.setValueAtTime(0.15, audioCtx.currentTime);
             g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + d);
             o.start();
             o.stop(audioCtx.currentTime + d);
@@ -1515,8 +1447,17 @@
 
         window.onload = async () => {
             await loadPlayers();
+            
+            // Auto-start music (browsers require user interaction first)
             musicOn = true;
-            playMusic();
+            document.getElementById('musicStatus').textContent = '🔊 Music ON';
+            
+            // Try to play music (will work after first click)
+            document.addEventListener('click', function startMusic() {
+                if (musicOn && bgMusic.paused) {
+                    bgMusic.play().catch(e => console.log('Waiting for interaction'));
+                }
+            }, { once: false });
         };
 
         window.deletePlayer = deletePlayer;
