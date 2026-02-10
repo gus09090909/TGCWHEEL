@@ -892,9 +892,9 @@
         const audioCtx = new AudioContext();
         let musicOn = false;
 
-        // Background music - Quiz Master from Pixabay
+        // Background music - Local file
         const bgMusic = new Audio();
-        bgMusic.src = 'https://cdn.pixabay.com/download/audio/2024/12/24/audio_91b33dda96.mp3?filename=quiz-master-382651.mp3';
+        bgMusic.src = 'quiz-master.mp3'; // Put this file in same folder as HTML
         bgMusic.loop = true;
         bgMusic.volume = 0.15; // Very low volume (15%)
         bgMusic.preload = 'auto';
@@ -906,8 +906,7 @@
             
             if (musicOn) {
                 bgMusic.play().catch(e => {
-                    console.log('Audio play failed:', e);
-                    // Browsers require user interaction first
+                    console.log('Audio play failed (need user interaction):', e);
                 });
             } else {
                 bgMusic.pause();
